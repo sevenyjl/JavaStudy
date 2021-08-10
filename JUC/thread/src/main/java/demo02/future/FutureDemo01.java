@@ -10,7 +10,45 @@ import java.util.function.Supplier;
 public class FutureDemo01 {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        demo05CompletableFuture();
+        demo06CompletableFuture();
+    }
+
+    /**
+     * 这样就完全解决了问题
+     */
+    public static void demo06CompletableFuture() {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 20, 10, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
+        System.out.println(Thread.currentThread().getName() + "\t开始看书...");
+        System.out.println(Thread.currentThread().getName() + "\t口渴了...叫弟弟拿水");
+        CompletableFuture<Integer> completableFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println(Thread.currentThread().getName() + "\t弟弟收到了...去接水了");
+            int water = 0;
+            for (int i = 0; i < 3; i++) {
+                water += 100;
+                //休眠1秒
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + "\t接水中..." + water);
+            }
+            System.out.println(Thread.currentThread().getName() + "\t接水完成");
+            return water;
+        }, threadPoolExecutor).whenComplete((result, e) -> {
+            if (e == null) {
+                System.out.println(Thread.currentThread().getName() + "\t弟弟去接完了水");
+                drink(result);
+            }
+        }).exceptionally((throwable -> {
+            System.out.println(Thread.currentThread().getName() + "\t弟弟跑去玩了，接水失败");
+            return 0;
+        }));
+        System.out.println(Thread.currentThread().getName() + "\t我在等待水的到来");
+    }
+
+    public static void drink(int water) {
+        System.out.println(Thread.currentThread().getName() + "\t我喝到水了，一口气喝了" + water);
     }
 
     /**
