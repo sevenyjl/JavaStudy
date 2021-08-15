@@ -15,6 +15,55 @@ public class Demo01 {
     static volatile int flag = 0;
 
     public static void main(String[] args) {
+        useBySemaphore();
+    }
+
+    /**
+     * 使用信号灯来控制
+     */
+    private static void useBySemaphore() {
+        Semaphore semaphoreA = new Semaphore(1);
+        Semaphore semaphoreB = new Semaphore(0);
+        Semaphore semaphoreC = new Semaphore(0);
+        //创建一个线程a
+        Thread a = new Thread(() -> {
+            while (true) {
+                try {
+                    semaphoreA.acquire();
+                    System.out.println("A");
+                    semaphoreB.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "a");
+        a.start();
+        //创建一个线程b
+        Thread b = new Thread(() -> {
+            while (true) {
+                try {
+                    semaphoreB.acquire();
+                    System.out.println("B");
+                    semaphoreC.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "b");
+        b.start();
+        //创建一个线程b
+        Thread c = new Thread(() -> {
+            while (true) {
+                try {
+                    semaphoreC.acquire();
+                    System.out.println("C");
+                    semaphoreA.release();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "c");
+        c.start();
     }
 
     /**
