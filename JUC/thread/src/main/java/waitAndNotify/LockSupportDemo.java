@@ -11,7 +11,30 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class LockSupportDemo {
     public static void main(String[] args) {
-        justSolveError();
+        parkAndInterrupt();
+    }
+
+    /**
+     * 在线程park时，当调用了该线程的interrupt()会 取消阻塞，不论park多少次都可以
+     */
+    private static void parkAndInterrupt() {
+        //创建一个线程a
+        Thread a = new Thread(() -> {
+            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "-->\t" + Thread.currentThread().getName() + "\tcome in\t" + Thread.currentThread().isInterrupted());
+            LockSupport.park();
+            LockSupport.park();
+            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "-->\t" + Thread.currentThread().getName() + "\t被唤醒" + Thread.currentThread().isInterrupted());
+        }, "a");
+        a.start();
+        //休眠3  SECONDS
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "-->\t" + Thread.currentThread().getName() + "\t通知" + a.isInterrupted());
+        a.interrupt();
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "-->\t" + Thread.currentThread().getName() + "\t通知后" + a.isInterrupted());
     }
 
     /**
