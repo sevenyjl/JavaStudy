@@ -27,7 +27,6 @@ public class VolatileSeeDemo {
     }
 
     public static void main(String[] args) {
-        seeDemo();
     }
 
     /**
