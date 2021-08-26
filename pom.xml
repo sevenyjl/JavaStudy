@@ -13,6 +13,7 @@
         <module>JUC</module>
         <module>JUC/Volatile</module>
         <module>algorithm</module>
+        <module>jdbc</module>
     </modules>
 
     <properties>
