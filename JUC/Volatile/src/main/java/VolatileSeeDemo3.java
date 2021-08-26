@@ -12,11 +12,11 @@ public class VolatileSeeDemo3 {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println(Thread.currentThread().getName() + "\t修改完成");
             resource3.setNum(1);
             resource3.setNumVolatile(1);
             resource3.setNumSync(1);
             resource3.getNumAtomic().set(1);
-            System.out.println(Thread.currentThread().getName() + "\t修改完成");
         }, "a");
         a.start();
         //休眠1  SECONDS
@@ -30,7 +30,7 @@ public class VolatileSeeDemo3 {
             while (resource3.getNum() != 1) {
             }
             System.out.println(Thread.currentThread().getName() + "\t检测到了修改");
-        }, "b");
+        }, "普通变量");
         b.start();
 
         //创建一个线程c
@@ -38,21 +38,21 @@ public class VolatileSeeDemo3 {
             while (resource3.getNumVolatile() != 1) {
             }
             System.out.println(Thread.currentThread().getName() + "\t检测到了修改");
-        }, "c");
+        }, "volatile变量");
         c.start();
         //创建一个线程d
         Thread d = new Thread(() -> {
             while (resource3.getNumSync() != 1) {
             }
             System.out.println(Thread.currentThread().getName() + "\t检测到了修改");
-        }, "d");
+        }, "普通变量sync加锁");
         d.start();
         //创建一个线程e
         Thread e = new Thread(() -> {
             while (resource3.getNumAtomic().get() != 1) {
             }
             System.out.println(Thread.currentThread().getName() + "\t检测到了修改");
-        }, "e");
+        }, "AtomicInteger");
         e.start();
     }
 }
