@@ -4,6 +4,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.DbUtil;
 import cn.hutool.db.handler.BeanListHandler;
+import cn.hutool.json.JSONUtil;
 import com.seven.jdbc.bean.DbField;
 import com.seven.jdbc.bean.DbTable;
 import com.zaxxer.hikari.HikariDataSource;
@@ -11,14 +12,8 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -87,6 +82,12 @@ public class DBUtils {
         return handlerResultSet(primaryKeys);
     }
 
+
+    /**
+     * @param resultSet
+     * @return
+     * @throws SQLException
+     */
     private static List<Map> handlerResultSet(ResultSet resultSet) throws SQLException {
         try {
             List<Map> handle = new BeanListHandler<>(Map.class).handle(resultSet);
@@ -159,6 +160,64 @@ public class DBUtils {
             }
         } finally {
             DbUtil.close(connection);
+        }
+    }
+
+    /**
+     * 根据sql获取字段信息
+     */
+    public static List<DbField> listFieldsBySql(@NonNull DataSource dataSource, @NonNull String sql) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        try {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            ArrayList<DbField> dbFields = new ArrayList<>();
+            HashMap<String, Set<String>> schemaTableName = new HashMap<>();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                Set<String> orDefault = schemaTableName.getOrDefault(metaData.getSchemaName(i), new HashSet<>());
+                orDefault.add(metaData.getTableName(i));
+                schemaTableName.put(metaData.getSchemaName(i), orDefault);
+                dbFields.add(new DbField()
+                        .setTableName(metaData.getTableName(i))
+                        .setColumnName(metaData.getColumnName(i))
+                        .setTypeName(metaData.getColumnTypeName(i))
+                        .setIsNullable(metaData.isNullable(i) + "")
+                        .setIsAutoIncrement(metaData.isAutoIncrement(i) + "")
+                        .setRemarks(metaData.getColumnLabel(i)));
+            }
+            HashMap<String, DbField> temp = new HashMap<>();
+            dbFields.forEach(dbField -> temp.put(dbField.getTableName() + dbField.getColumnName(), dbField));
+            //查询主键和唯一键
+            schemaTableName.forEach((k, v) -> v.forEach(s -> {
+                try {
+                    getUniqueFieldsWithTableName(connection, k, s).forEach(t -> {
+                        String columnName = MapUtil.getStr(t, "COLUMN_NAME");
+                        String tableName = MapUtil.getStr(t, "TABLE_NAME");
+                        DbField dbField = temp.get(tableName + columnName);
+                        if (dbField == null) {
+                            log.error("表{},错误唯一键：{},字段信息：{}", tableName, columnName, dbFields);
+                        } else {
+                            dbField.setIsUnique(true);
+                        }
+                    });
+                    getKeyFieldsWithTableName(connection, k, s).forEach(t -> {
+                        String columnName = MapUtil.getStr(t, "COLUMN_NAME");
+                        String tableName = MapUtil.getStr(t, "TABLE_NAME");
+                        DbField dbField = temp.get(tableName + columnName);
+                        if (dbField == null) {
+                            log.error("表{},错误主键：{},字段信息：{}", tableName, columnName, dbFields);
+                        } else {
+                            dbField.setIsKey(true);
+                        }
+                    });
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }));
+            return new ArrayList<>(temp.values());
+        } finally {
+            DbUtil.close(connection, statement, resultSet);
         }
     }
 }

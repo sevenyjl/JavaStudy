@@ -24,10 +24,13 @@ public class DBUtilsTest {
         hikariConfig.setUsername("root");
         hikariConfig.setPassword("GSAdmin123");
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
-        List<DbTable> dbTables = DBUtils.listTableInfo(dataSource);
-        System.out.println(JSONUtil.toJsonStr(dbTables));
-        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsInfo(dataSource, dbTables.get(0).getTableName())));
-//        Connection connection = dataSource.getConnection();
+//        List<DbTable> dbTables = DBUtils.listTableInfo(dataSource);
+//        System.out.println(JSONUtil.toJsonStr(dbTables));
+//        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsInfo(dataSource, dbTables.get(0).getTableName())));
+        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsBySql(dataSource,"select * from mysql_student_1,mysql_student_2")));
+
+        Connection connection = dataSource.getConnection();
+//        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsBySql(connection,"select * from all_com_key_getrelationtest")));
 //        List<Map> tables = DBUtils.getTables(connection, null, null);
 //        System.out.println(JSONUtil.toJsonStr(tables));
 //        List<Map> fieldsWithTableName = DBUtils.getFieldsWithTableName(connection, null, tables.get(0).get("TABLE_NAME").toString());
@@ -49,8 +52,9 @@ public class DBUtilsTest {
         hikariConfig.setSchema("public");
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         List<DbTable> dbTables = DBUtils.listTableInfo(dataSource);
-        System.out.println(JSONUtil.toJsonStr(dbTables));
-        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsInfo(dataSource, dbTables.get(0).getTableName())));
+//        System.out.println(JSONUtil.toJsonStr(dbTables));
+//        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsInfo(dataSource, dbTables.get(0).getTableName())));
+        System.out.println(JSONUtil.toJsonStr(DBUtils.listFieldsBySql(dataSource,"select * from graphx_instance_auto_backup,graphx_instance_backup_file")));
 //        System.out.println(JSONUtil.toJsonStr(DBUtils.listTableInfo(dataSource)));
 //        Connection connection = dataSource.getConnection();
 //        List<Map> tables = DBUtils.getTables(connection, "public", null);

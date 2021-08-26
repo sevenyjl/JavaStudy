@@ -19,6 +19,7 @@ public class DbField {
     private String isAutoIncrement;
     private Boolean isUnique = false;
     private Boolean isKey = false;
+    private Class<?> javaClass;
 
     public static List<DbField> map2Bean(List<Map> list) {
         return list.stream().map(DbField::map2Bean).collect(Collectors.toList());
