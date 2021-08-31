@@ -14,33 +14,6 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
  * 每个都有100张
  * 现在有 200人（线程）买票，每人能买10张，随机到任意窗口购买。请编写
  */
-class Ticket {
-    public static AtomicIntegerArray atomicIntegerArray = null;
-
-    static {
-        int[] ints = new int[10];
-        Arrays.fill(ints, 100);
-        atomicIntegerArray = new AtomicIntegerArray(ints);
-    }
-
-    public boolean getTicket(int i) {
-        int num = atomicIntegerArray.get(i);
-        if (num != 0) {
-            return atomicIntegerArray.compareAndSet(i, num, num - 1);
-        }
-        return false;
-    }
-
-    public void showTicket(int i) {
-        System.out.println("窗口" + i + "还有：" + atomicIntegerArray.get(i) + "票");
-    }
-
-    public void showTicket() {
-        for (int i = 0; i < atomicIntegerArray.length(); i++) {
-            showTicket(i);
-        }
-    }
-}
 
 public class AtomicIntegerArrayDemo {
     public static void main(String[] args) throws InterruptedException {
@@ -62,5 +35,33 @@ public class AtomicIntegerArrayDemo {
         }
         countDownLatch.await();
         ticket.showTicket();
+    }
+
+    public static class Ticket {
+        public static AtomicIntegerArray atomicIntegerArray = null;
+
+        static {
+            int[] ints = new int[10];
+            Arrays.fill(ints, 100);
+            atomicIntegerArray = new AtomicIntegerArray(ints);
+        }
+
+        public boolean getTicket(int i) {
+            int num = atomicIntegerArray.get(i);
+            if (num != 0) {
+                return atomicIntegerArray.compareAndSet(i, num, num - 1);
+            }
+            return false;
+        }
+
+        public void showTicket(int i) {
+            System.out.println("窗口" + i + "还有：" + atomicIntegerArray.get(i) + "票");
+        }
+
+        public void showTicket() {
+            for (int i = 0; i < atomicIntegerArray.length(); i++) {
+                showTicket(i);
+            }
+        }
     }
 }

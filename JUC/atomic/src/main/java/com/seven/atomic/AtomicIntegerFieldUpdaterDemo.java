@@ -36,7 +36,7 @@ public class AtomicIntegerFieldUpdaterDemo {
         AtomicIntegerFieldUpdater<AtomicIntegerFieldUpdaterDemo> updaterNum = AtomicIntegerFieldUpdater.newUpdater(AtomicIntegerFieldUpdaterDemo.class, "updaterNum");
         AtomicIntegerFieldUpdaterDemo demo = new AtomicIntegerFieldUpdaterDemo();
         CountDownLatch countDownLatch = new CountDownLatch(10);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Thread threadTemp = new Thread(() -> {
                 for (int j = 0; j < 100; j++) {
                     demo.addNum();
@@ -48,9 +48,9 @@ public class AtomicIntegerFieldUpdaterDemo {
             threadTemp.start();
         }
         countDownLatch.await();
-        System.out.println("getNum" + demo.getNum());
-        System.out.println("getUpdaterNum" + demo.getUpdaterNum());
-        System.out.println("getNumVolatile" + demo.getNumVolatile());
+        System.out.println("getNum=" + demo.getNum());//<=10000
+        System.out.println("getUpdaterNum=" + demo.getUpdaterNum());//10000
+        System.out.println("getNumVolatile=" + demo.getNumVolatile());//<=10000
 
     }
 }
