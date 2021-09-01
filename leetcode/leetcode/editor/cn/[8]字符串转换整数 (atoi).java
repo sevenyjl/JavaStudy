@@ -114,11 +114,14 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int myAtoi(String s) {
-        char[] chars = s.trim().toCharArray();
+        String tempStr = s.trim();
+        char[] chars = tempStr.toCharArray();
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < chars.length; i++) {
             char a = chars[i];
-            if (a == '-' || a == '+') {
+            if (a == '-' && result.length() == 0) {
+                result.append(a);
+            } else if (a == '+'&& result.length() == 0) {
                 result.append(a);
             } else if (a >= '0' && a <= ('9')) {
                 result.append(a);
