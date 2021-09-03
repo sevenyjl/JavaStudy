@@ -50,7 +50,13 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxArea(int[] height) {
-
+        int max = 0;
+        for (int i = 1; i < height.length; i++) {
+            for (int j = 0; j < i; j++) {
+                max = Math.max(max, (i - j) * (Math.min(height[i], height[j])));
+            }
+        }
+        return max;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
