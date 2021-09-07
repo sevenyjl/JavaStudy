@@ -14,6 +14,7 @@
         <module>JUC/Volatile</module>
         <module>algorithm</module>
         <module>jdbc</module>
+        <module>interview</module>
     </modules>
 
     <properties>
