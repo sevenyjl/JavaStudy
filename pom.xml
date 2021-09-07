@@ -15,6 +15,7 @@
         <module>algorithm</module>
         <module>jdbc</module>
         <module>interview</module>
+        <module>jvm</module>
     </modules>
 
     <properties>
