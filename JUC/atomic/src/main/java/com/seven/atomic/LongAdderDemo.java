@@ -15,6 +15,12 @@ import java.util.concurrent.atomic.LongAdder;
  * {@link LongAdderPrinciple} 按照{@link java.util.concurrent.atomic.LongAdder}分而治之思想，做一个自己的简单版   耗时：2832毫秒
  */
 public class LongAdderDemo {
+    /**
+     * longAdder的add方法解析：
+     * 当第一个线程进行计算时，由于竞争不激烈，所以对base进行计算赋值。当一堆线程开始并发涌入时，对base进行C A S赋值操作时，可能有线程赋值失败，那么这时，LongAdder就会开始初始化Cells，刚开始初始化cells时的长度为2，然后对cells中的随机元素（是获取线程 probe哈希cells的长度减1）进行C A S 赋值。当线程量继续变大，cells已经不够用了，cells中的元素进行赋值失败了，就需要进行扩容，扩容为原来2倍，最大扩容不大于cpu核数。
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 //        addPlusSync();
 //        addPlusAtomicInteger();
