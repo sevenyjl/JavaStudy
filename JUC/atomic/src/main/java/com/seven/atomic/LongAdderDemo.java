@@ -24,7 +24,7 @@ public class LongAdderDemo {
     public static void main(String[] args) {
 //        addPlusSync();
 //        addPlusAtomicInteger();
-//        addPlusLongAdder();
+        addPlusLongAdder();
 //        addPlusMyLongAdder();
     }
 

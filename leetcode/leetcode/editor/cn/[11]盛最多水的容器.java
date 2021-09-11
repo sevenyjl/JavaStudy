@@ -51,9 +51,20 @@
 class Solution {
     public int maxArea(int[] height) {
         int max = 0;
-        for (int i = 1; i < height.length; i++) {
-            for (int j = 0; j < i; j++) {
-                max = Math.max(max, (i - j) * (Math.min(height[i], height[j])));
+        int left = 0;
+        int right = height.length - 1;
+        while (true) {
+            //结束条件：左右指针一样即跳出循环
+            if (left == right) {
+                break;
+            }
+            //判断面积
+            max = Math.max(max, (right - left) * Math.min(height[left], height[right]));
+            //左边指针移动条件，左边的value小于右边则 左边移动，否则右边移动
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
             }
         }
         return max;
