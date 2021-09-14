@@ -46,4 +46,15 @@ public class TestRestTemplateController {
         }
     }
 
+    /**
+     * 对象带 RestTemplate
+     *
+     * @param httpBean
+     * @return
+     */
+    @PostMapping("ask2")
+    public Object ask2(@RequestBody HttpBean httpBean) {
+        return httpBean.execute(restTemplate);
+    }
+
 }

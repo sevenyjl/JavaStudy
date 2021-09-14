@@ -5,9 +5,8 @@ import cn.hutool.json.JSONUtil;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,5 +90,25 @@ public class HttpBean {
     }
 
     private HttpBean() {
+    }
+
+    public Object execute(RestTemplate restTemplate){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        getHeaders().forEach(httpHeaders::add);
+        HttpEntity<Object> objectHttpEntity = null;
+        if (getJsonObject() != null) {
+            objectHttpEntity = new HttpEntity<>(JSONUtil.toJsonStr(getJsonObject()), httpHeaders);
+        } else if (getFromData() != null) {
+            objectHttpEntity = new HttpEntity<>(getFromData(), httpHeaders);
+        } else {
+            objectHttpEntity = new HttpEntity<>(null, httpHeaders);
+        }
+        ResponseEntity<Object> execute = restTemplate.exchange(getUrl(), getHttpMethod(), objectHttpEntity, Object.class);
+        if (execute.getStatusCode().is2xxSuccessful()) {
+            return execute.getBody();
+        } else {
+            // TODO: 2021/9/9 做回调增强
+            return "请求失败";
+        }
     }
 }
