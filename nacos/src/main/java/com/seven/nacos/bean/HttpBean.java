@@ -107,7 +107,7 @@ public class HttpBean {
         if (execute.getStatusCode().is2xxSuccessful()) {
             return execute.getBody();
         } else {
-            // TODO: 2021/9/9 做回调增强
+            // 做回调增强/日志记录
             return "请求失败";
         }
     }
