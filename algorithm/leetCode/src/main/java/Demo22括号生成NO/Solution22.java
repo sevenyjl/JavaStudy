@@ -1,6 +1,7 @@
 package Demo22括号生成NO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Solution22 {
@@ -15,6 +16,9 @@ public class Solution22 {
     }
 
     public static List<String> generateParenthesis(int n) {
+        HashSet<String> strings = new HashSet<>();
+
+
         return new ArrayList<>();
     }
 }
