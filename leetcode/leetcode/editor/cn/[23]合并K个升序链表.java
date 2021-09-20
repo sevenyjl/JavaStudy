@@ -59,7 +59,26 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-
+        if (lists == null) {
+            return null;
+        }
+        ListNode result = new ListNode();
+        //拆了再合
+        ArrayList<Integer> integers = new ArrayList<>();
+        for (ListNode list : lists) {
+            while (list != null) {
+                integers.add(list.val);
+                list = list.next;
+            }
+        }
+        ListNode next = result;
+        Iterator<Integer> iterator = integers.stream().sorted().iterator();
+        while (iterator.hasNext()) {
+            Integer v = iterator.next();
+            next.next = new ListNode(v);
+            next = next.next;
+        }
+        return result.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
