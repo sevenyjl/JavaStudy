@@ -1,6 +1,9 @@
 package map;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
@@ -11,6 +14,31 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Demo01ConcurrentHashMap {
     public static void main(String[] args) {
+        Map<Object, Object> objectObjectMap = Collections.synchronizedMap(new HashMap<>());
+    }
+
+    private static void successHashTable() {
+        Hashtable<String, String> hashtable = new Hashtable<>();
+        final int threadSize = 10;
+        CountDownLatch countDownLatch = new CountDownLatch(threadSize);
+        for (int i = 0; i < threadSize; i++) {
+            Thread threadTemp = new Thread(() -> {
+                try {
+                    for (int j = 0; j < 10; j++) {
+                        hashtable.put(Thread.currentThread().getName() + j, "" + j);
+                    }
+                } finally {
+                    countDownLatch.countDown();
+                }
+            }, "thread " + i);
+            threadTemp.start();
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(hashtable.size());
     }
 
     /**
