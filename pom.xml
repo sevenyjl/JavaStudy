@@ -24,6 +24,7 @@
         <module>nacos</module>
         <module>redis</module>
         <module>web</module>
+        <module>MyProject</module>
     </modules>
 
     <properties>
