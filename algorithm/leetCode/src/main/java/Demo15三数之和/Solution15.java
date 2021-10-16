@@ -43,4 +43,40 @@ public class Solution15 {
         }
         return new ArrayList<>(result);
     }
+
+
+
+
+    public List<List<Integer>> threeSum3(int[] nums) {
+        //-4,-1,-1,0,1,2
+        //取得数组中的最大数，并取得位数
+        HashSet<List<Integer>> result = new HashSet<>();
+        int[] sort = Arrays.stream(nums).sorted().toArray();
+        for (int i = 0; i < sort.length - 1; i++) {
+            result.addAll(towSum(i + 1, sort.length - 1, i, sort));
+        }
+        return new ArrayList<>(result);
+    }
+
+    public static List<List<Integer>> towSum(int left, int right, int sumIndex, int[] nums) {
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        while (true) {
+            //退出条件
+            if (left >= right) {
+                break;
+            }
+//            System.out.println(nums[left] + "+" + nums[right] + "=" + nums[sumIndex]);
+            //计算
+            int target = nums[left] + nums[right];
+            if (target + nums[sumIndex] == 0) {
+                result.add(Arrays.asList(nums[sumIndex], nums[left], nums[right]));
+                left++;
+            } else if (target < nums[sumIndex]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return result;
+    }
 }
