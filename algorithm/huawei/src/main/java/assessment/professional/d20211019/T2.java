@@ -16,7 +16,7 @@ package assessment.professional.d20211019;
  */
 public class T2 {
     public static void main(String[] args) {
-        System.out.println(solution(1, Integer.MAX_VALUE) + "=" + mostDouble(1, Integer.MAX_VALUE));
+        System.out.println(solution(1, 1000000000-10) + "=" + mostDouble(1, 1000000000-10));
     }
 
     public static int solution(int m, int n) {
@@ -42,7 +42,7 @@ public class T2 {
         } else if (n < 1000000000) {
             return solution(m, 99999999);
         } else {
-            return (n - m + 1) + solution(m, 999999999);
+            return (n - 999999999) + solution(m, 999999999);
         }
     }
 
