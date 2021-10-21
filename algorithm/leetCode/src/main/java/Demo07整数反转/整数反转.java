@@ -99,6 +99,15 @@ public class 整数反转 {
         for (int i = chars.length - 1; i >= 0; i--) {
             stringBuilder.append(chars[i]);
         }
-        return Integer.parseInt(flag ? "-" + stringBuilder : stringBuilder.toString());
+        
+        long l = Long.parseLong(flag ? "-" + stringBuilder : stringBuilder.toString());
+        if (l > Integer.MAX_VALUE) {
+            return 0;
+        }
+
+        if (l < Integer.MIN_VALUE) {
+            return 0;
+        }
+        return (int) l;
     }
 }
