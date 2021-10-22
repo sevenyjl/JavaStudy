@@ -1,4 +1,4 @@
-package commonly.sort;
+package commond.sort;
 
 public class RadixSort implements ISort {
 

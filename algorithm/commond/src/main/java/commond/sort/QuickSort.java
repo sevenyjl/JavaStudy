@@ -1,4 +1,4 @@
-package commonly.sort;
+package commond.sort;
 
 import java.util.Arrays;
 import java.util.HashSet;
