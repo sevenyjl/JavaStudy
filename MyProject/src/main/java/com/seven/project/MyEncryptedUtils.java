@@ -1,10 +1,5 @@
 package com.seven.project;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -14,9 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
+
 public class MyEncryptedUtils {
-    public static void main(String[] args) {
-        decodeDirSplit(new File("G:\\temp"));
+    public static void main(String[] args) throws IOException {
+        // File file = new File("D:\\my\\question-master\\src\\main\\resources\\sql\\question.sql");
+        // encryptedFile(file);
+        // decodeFileText(new File("D:\\my\\question-master\\src\\main\\resources\\sql\\question.sql.seven"));
+        encryptedFile(new File("D:\\my\\question-master\\src\\main\\resources\\sql\\question.sql.seven"));
     }
 
     /**
@@ -36,6 +39,7 @@ public class MyEncryptedUtils {
             int count = 0;
             try {
                 File outFile = new File(file.getCanonicalPath() + ".seven" + index);
+                System.out.println(outFile.getAbsolutePath());
                 BufferedOutputStream outputStream = FileUtil.getOutputStream(outFile);
                 while ((temp = inputStream.read(bytes)) != -1) {
                     if (bytes[0] >= Byte.MAX_VALUE - 2) {
@@ -150,6 +154,7 @@ public class MyEncryptedUtils {
 
     private static void extractedText(File file) throws IOException {
         File outFile = new File(file.getCanonicalPath() + ".seven");
+        System.out.println(outFile.getAbsolutePath());
         FileUtil.writeString(encrypted(FileUtil.readUtf8String(file)), outFile, "UTF-8");
     }
 
@@ -178,6 +183,7 @@ public class MyEncryptedUtils {
 
     private static void decodeFileText(File file) throws IOException {
         File outFile = new File(file.getCanonicalPath().replace(".seven", ""));
+        System.out.println(outFile.getAbsolutePath());
         FileUtil.writeUtf8String(MyEncryptedUtils.decode(FileUtil.readUtf8String(file)), outFile);
     }
 

@@ -1,10 +1,10 @@
 package com.seven.project;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
-
 import java.io.File;
 import java.util.List;
+
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 
 public class FileUtils {
     public static void main(String[] args) {
