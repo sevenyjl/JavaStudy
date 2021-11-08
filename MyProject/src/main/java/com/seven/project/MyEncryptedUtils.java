@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class MyEncryptedUtils {
+    public static void main(String[] args) {
+        decodeDirSplit(new File("G:\\temp"));
+    }
 
     /**
      * 分割加密文件 100kb为分割单位
