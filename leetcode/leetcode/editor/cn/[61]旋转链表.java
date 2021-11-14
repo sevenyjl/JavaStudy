@@ -44,26 +44,30 @@ class Solution {
         if (head == null) {
             return head;
         }
+        // 统计个数
         int count = 1;
         ListNode next = head;
         while (next.next != null) {
             count++;
             next = next.next;
         }
-        next.next = head;
-        ListNode pre = next;
-        next = next.next;
-        int index = k % count;
-        while (next.next != null) {
-            pre = next;
-            next = next.next;
-            if (index == 0) {
-                break;
-            }
-            index--;
+        ListNode last = next;
+        // 取模
+        int size = k % count;
+        int i = count - size;
+        if (i == 0 || i == count) {
+            return head;
         }
-        pre.next = null;
-        return next;
+        next = head;
+        while (i != 1) {
+            assert next != null;
+            next = next.next;
+            i--;
+        }
+        last.next = head;
+        ListNode result = next.next;
+        next.next = null;
+        return result;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
