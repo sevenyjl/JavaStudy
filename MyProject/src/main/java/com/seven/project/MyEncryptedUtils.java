@@ -19,7 +19,7 @@ public class MyEncryptedUtils {
         // File file = new File("D:\\my\\question-master\\src\\main\\resources\\sql\\question.sql");
         // encryptedFile(file);
         // decodeFileText(new File("D:\\my\\question-master\\src\\main\\resources\\sql\\question.sql.seven"));
-        encryptedFile(new File("D:\\my\\question-master\\src\\main\\resources\\sql\\question.sql.seven"));
+        decodeDirSplit(new File("C:\\Users\\Administrator\\Downloads\\temp"));
     }
 
     /**
