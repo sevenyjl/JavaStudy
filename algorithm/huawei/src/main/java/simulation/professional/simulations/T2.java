@@ -1,4 +1,4 @@
-package simulation.professional.d20211014;
+package simulation.professional.simulations;
 
 /**
  * 某简易的linux目录系统 cd 命令（change directory）功能如下：

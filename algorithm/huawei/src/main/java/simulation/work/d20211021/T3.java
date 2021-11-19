@@ -24,7 +24,7 @@ package simulation.work.d20211021;
  * 尽管 3 的左边元素都比它小，但其右边的 2 比它小，所以它不能是主元； 尽管 2 的右边元素都比它大，但其左边的 3 比它大，所以它不能是主元。
  * 同理，4 和 5 都可能是主元。
  * 因此，1、4、5 是可能的主元，按升序输出为 [1 4 5] 。
- * @see     simulation.professional.d20211014.T1
+ * @see     simulation.professional.simulations.T1
  */
 
 

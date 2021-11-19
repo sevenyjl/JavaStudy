@@ -1,4 +1,4 @@
-package simulation.professional.d20211014;
+package simulation.professional.simulations;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

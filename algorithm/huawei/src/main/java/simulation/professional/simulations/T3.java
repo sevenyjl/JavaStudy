@@ -1,4 +1,4 @@
-package simulation.professional.d20211014;
+package simulation.professional.simulations;
 
 /**
  * 终端公司的零售店需要定期去仓库提取货物，假设零售店和仓库在一个矩阵上：相邻点的距离为 1 ；只能通过上下左右走动。

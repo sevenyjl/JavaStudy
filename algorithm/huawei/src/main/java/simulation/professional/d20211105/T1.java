@@ -1,97 +1,98 @@
 package simulation.professional.d20211105;
 
+import java.util.Arrays;
+
 import cn.hutool.core.util.RandomUtil;
+import random.ArraysRandom;
 
 /**
  * @author y30016814
- * @since 2021/11/5 9:09
- * http://3ms.huawei.com/km/blogs/details/10437493
+ * @since 2021/11/10 16:27
+ * JAVA专业级科目一1105
+ * http://3ms.huawei.com/km/blogs/details/11249843
  */
 public class T1 {
+
     public static void main(String[] args) {
-        String string = RandomUtil.randomString("x.", RandomUtil.randomInt((int) Math.pow(10, 5)));
-        // String string = RandomUtil.randomString("x.", RandomUtil.randomInt(40));
-        int cnt = RandomUtil.randomInt(string.length());
-        System.out.println("string=" + string + ",cnt=" + cnt);
-        System.out.println(solution(string, cnt));
-        System.out.println(getMaxFreeMemoryLen(string, cnt));
-        // System.out.println(solution("x.xxxxx....xx", 6));
-        // System.out.println(getMaxFreeMemoryLen("x.xxxxx....xx", 6));
+        int[] ropeList = ArraysRandom.createRandomInts(1000000, 10000, false);
+        int len = RandomUtil.randomInt(20000, 200000);
+        ropeList = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        len = 30;
+        System.out.println(len);
+        long start = System.currentTimeMillis();
+        //do something
+        System.out.println(T1_Answer.getMaxRopeLength(len, ropeList));
+        System.out.printf("T1_Answer 执行耗时%s毫秒\n", System.currentTimeMillis() - start);
+        System.out.println("************over*************");
+        start = System.currentTimeMillis();
+        //do something
+        System.out.println(T1_Answer2.getMaxRopeLength(len, ropeList));
+        System.out.printf("T1_Answer2 执行耗时%s毫秒\n", System.currentTimeMillis() - start);
+        System.out.println("************over*************");
+        start = System.currentTimeMillis();
+        //do something
+        System.out.println(ge(len, ropeList));
+        System.out.printf("my 执行耗时%s毫秒\n", System.currentTimeMillis() - start);
+        System.out.println("************over*************");
+        start = System.currentTimeMillis();
+        //do something
+        System.out.println(T1_Answer3.getMaxRopeLength(len, ropeList));
+        System.out.printf("T1_Answer3 执行耗时%s毫秒\n", System.currentTimeMillis() - start);
+        System.out.println("************over*************");
+
     }
 
     /**
      * 暴力
-     * 可能超时~
+     * 找可能的最大值，找可能的最小值
+     * 最大值：sum(repoList)/len
+     * eg:sum(803,732,520,110)/11=196
+     * 最小值：max(repoList)/len
+     * eg:max(803,732,520,110)/11=73
      *
-     * @param str
-     * @param cnt
+     * @param len
+     * @param ropeList
      * @return
      */
-    private static int solution(String str, int cnt) {
-        char[] chars = str.toCharArray();
-        int max = 0;
-        if (cnt == 0) {
-            int temp = 0;
-            for (char aChar : chars) {
-                if (aChar == '.') {
-                    temp++;
-                } else {
-                    max = Math.max(temp, max);
-                    temp = 0;
-                }
-            }
-            return Math.max(temp, max);
+    public static int ge(int len, int[] ropeList) {
+        Arrays.sort(ropeList);
+        int minTemp = ropeList[ropeList.length - 1] / len;
+        // 1.当分割的长度小于rope.len 就直接排序，返回第rope.len-len个
+        if (len <= ropeList.length && ropeList[ropeList.length - len] > minTemp) {
+            return ropeList[ropeList.length - len];
         }
-        int start = 0;
-        for (int i = 0; i < chars.length; i++) {
-            char aChar = chars[i];
-            max = Math.max(i + 1 - start, max);
-            if (aChar == 'x') {
-                int tempCnt = cnt - 1;
-                for (int j = i + 1; j < chars.length; j++) {
-                    if (chars[j] == 'x') {
-                        if (tempCnt == 0) {
-                            max = Math.max(j - start, max);
-                            break;
-                        }
-                        tempCnt--;
-                    }
-                }
-                if (tempCnt > 0) {
-                    max = Math.max(chars.length - start, max);
-                }
-                start = i + 1;
-            }
-        }
-        return max;
+        // 2. 定位可能的最大值，最小值，二分查询
+        int maxTemp = Arrays.stream(ropeList).sum() / len;
+
+        return erFen(maxTemp, minTemp, len, ropeList);
     }
 
-    public static int getMaxFreeMemoryLen(String memory, int cnt) {
-        //左指针
-        int left = 0;
-        //右指针
-        int right = 0;
-        //窗口内被占用内存的个数
-        int window = 0;
-        //释放窗口内的被占用内存的个口内被占用内存的个数数，所能形成的最大值
-        int maxMemory = 0;
-        while (right < memory.length()) {
-            //当窗口内的被占用的个数小于阈值，且右指针小于memory的个数
-            while (window <= cnt && right < memory.length()) {
-                if (memory.charAt(right) == 'x') {
-                    window++;
-                }
-                if (window <= cnt) {
-                    maxMemory = Math.max(maxMemory, right - left + 1);
-                }
-                right++;
+    private static int erFen(int maxTemp, int minTemp, int len, int[] ropeList) {
+        while (maxTemp > minTemp + 1) {
+            int er = (maxTemp + minTemp) / 2;
+            if (isOver(er, ropeList, len)) {
+                minTemp = er;
+            } else {
+                maxTemp = er;
             }
-            //左指针若遇到x，则把窗口内被占用内存的个数减少
-            if (memory.charAt(left) == 'x') {
-                window--;
-            }
-            left++;
         }
-        return maxMemory;
+        return isOver(maxTemp,ropeList,len)?maxTemp:minTemp;
+    }
+
+    private static boolean isOver(int step, int[] ropeList, int len) {
+        int count = 0;
+        for (int j : ropeList) {
+            int temp = j;
+            while (temp >= step) {
+                count++;
+                temp -= step;
+            }
+            if (count >= len) {
+                return true;
+            }
+        }
+        return false;
     }
 }
+
+

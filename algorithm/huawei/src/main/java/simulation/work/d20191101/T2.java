@@ -1,4 +1,4 @@
-package simulation.professional.d20211019;
+package simulation.work.d20191101;
 
 /**
  * 给定一个闭区间范围[m, n]，1<=m<=n<=10^9，求[m,n]区间上位数为偶数的整数有多少个？

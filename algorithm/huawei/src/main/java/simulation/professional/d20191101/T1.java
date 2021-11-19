@@ -1,15 +1,9 @@
-package simulation.professional.d20211020;
+package simulation.professional.d20191101;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.ObjIntConsumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * 8 间牢房排成一排，每间牢房不是有人住就是空着。
@@ -63,6 +57,7 @@ import java.util.stream.IntStream;
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/prison-cells-after-n-days
  * <p>
+ * http://3ms.huawei.com/km/blogs/details/7489043
  */
 public class T1 {
     public static void main(String[] args) {
@@ -75,6 +70,7 @@ public class T1 {
      * 解答成功:
      * 执行耗时:11 ms,击败了6.57% 的Java用户
      * 内存消耗:38.9 MB,击败了5.19% 的Java用户
+     *
      * @param cells
      * @param n
      * @return

@@ -1,11 +1,10 @@
-package simulation.professional.d20211019;
+package simulation.work.d20191101;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import cn.hutool.core.util.ObjectUtil;
-import random.ArraysRandom;
 
 /**
  * 某地突发一起重大交通事故，热心群众立即播打了 120 急救电话，事发时段正巧是下班高峰，路况不尽如人意。救护车司机打开地图 matrix ，matrix 是给定的一个的矩阵，给定起点S（坐标 startX, startY） 以及终点E（坐标 endX, endY）。地图上所有的 0 都显示通畅路段，1 代表拥堵路段（拥堵路段不可通行）。为了能尽快将伤员送往医院，司机立即求助于市交通部指挥中心，指挥中心使用智慧交通提供的紧急救援功能，可以将地图上的一个拥堵路段（1）开辟出一道绿色通道变为通畅路段（0）。（注意：司机仅有一次开辟绿色通道的机会）司机一次只能往上、往下、往左、往右行驶一公里，请返回他从 S 开始并走到 E 所花的最短公里数。如果一定不能到达，请返回 -1。
