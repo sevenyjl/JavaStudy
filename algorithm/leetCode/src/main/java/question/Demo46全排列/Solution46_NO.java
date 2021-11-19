@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  * Related Topics 数组 回溯
  * 👍 1601 👎 0
  */
-public class Solution46 {
+public class Solution46_NO {
     public static void main(String[] args) {
         System.out.println(permute(new int[] {1, 2, 3}));
     }
@@ -65,7 +65,7 @@ public class Solution46 {
     public static void backtrack(int n, List<Integer> output, List<List<Integer>> res, int first) {
         // 所有数都填完了
         if (first == n) {
-            res.add(new ArrayList<Integer>(output));
+            res.add(new ArrayList<>(output));
         }
         for (int i = first; i < n; i++) {
             // 动态维护数组
